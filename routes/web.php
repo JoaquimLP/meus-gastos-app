@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Livewire\Expense\ExpenseCreateComponent;
+use App\Http\Livewire\Expense\ExpenseEditComponent;
+use App\Http\Livewire\Expense\ExpenseListComponent;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,3 +23,18 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+
+Route::middleware(['auth:sanctum', 'verified'])->group(function(){
+
+    Route::prefix('expenses')->name('expenses.')->group(function(){
+
+        Route::get('/', ExpenseListComponent::class)->name('index');
+
+        Route::get('/create', ExpenseCreateComponent::class)
+             //->middleware('check.amountexpenses')
+            ->name('create');
+
+        Route::get('/edit/{expense}', ExpenseEditComponent::class)->name('edit');
+    });
+
+});
