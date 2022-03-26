@@ -3,7 +3,9 @@
 use App\Http\Livewire\Expense\ExpenseCreateComponent;
 use App\Http\Livewire\Expense\ExpenseEditComponent;
 use App\Http\Livewire\Expense\ExpenseListComponent;
+use App\Models\Expense;
 use Illuminate\Support\Facades\Route;
+use \Illuminate\Support\Facades\{File, Storage};
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +37,18 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
             ->name('create');
 
         Route::get('/edit/{expense}', ExpenseEditComponent::class)->name('edit');
+
+        Route::get('/{expense}/photo', function(Expense $expense){
+            $expense = auth()->user()->expenses->find($expense);
+            $image = null;
+            if(!Storage::disk("public")->exists($expense->photo)){
+                return abort(404, "Image not found!!");
+            }
+            $image = Storage::disk("public")->get($expense->photo);
+            $mimeType = File::mimeType(storage_path('app/public/' . $expense->photo));
+
+            return response($image)->header('Content-Type', $mimeType);
+        })->name('expenses-image');
     });
 
 });
