@@ -3,7 +3,9 @@
 namespace App\Http\Livewire\Plan;
 
 use App\Models\Plan;
+use App\Models\Sandbox\ApiClient;
 use Livewire\Component;
+
 
 class PlanCreateComponent extends Component
 {
@@ -26,11 +28,22 @@ class PlanCreateComponent extends Component
     {
         $this->validate();
         $plan = $this->plan;
-        $plan["reference"] = "pague-seguro";
-        Plan::create($plan);
+
+        // Criar o plano no pag seguro
+        $params = [
+            'name' =>  $this->plan['name'],
+            'charge' => 'AUTO',
+            'period' => 'MONTHLY',
+            'amountPerPayment' =>  $this->plan['price'],
+        ];
+
+        $response = ApiClient::cretePlans( $this->plan['slug'], $params);
+        $plan["reference"] = $response->json()['code'];
+        $plano = Plan::create($plan);
 
         session()->flash('message', 'Registro criado com sucesso!');
         $this->plan = [];
+
 
         return redirect()->route("plans.index");
     }
