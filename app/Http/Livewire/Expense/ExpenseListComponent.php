@@ -9,7 +9,7 @@ class ExpenseListComponent extends Component
 {
     public function render()
     {
-        $expenses = Expense::where('user_id', auth()->user()->id)->orderBy('id', 'desc')->paginate(3);
+        $expenses = Expense::where('user_id', auth()->user()->id)->orderBy('id', 'desc')->paginate(10);
         return view('livewire.expense.expense-list-component', compact("expenses"));
     }
 

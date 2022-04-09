@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('description');
             $table->integer('type');
-            $table->double('amount', 10,2); // 29,90
+            $table->double('price', 10,2); // 29,90
             $table->timestamps();
         });
     }

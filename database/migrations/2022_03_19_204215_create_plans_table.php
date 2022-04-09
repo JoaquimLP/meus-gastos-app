@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('description');
             $table->string('slug');
             $table->string('reference');
+            $table->double('price', 10,2); // 29,90
             $table->timestamps();
         });
     }

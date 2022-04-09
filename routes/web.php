@@ -3,6 +3,9 @@
 use App\Http\Livewire\Expense\ExpenseCreateComponent;
 use App\Http\Livewire\Expense\ExpenseEditComponent;
 use App\Http\Livewire\Expense\ExpenseListComponent;
+use App\Http\Livewire\Plan\PlanCreateComponent;
+use App\Http\Livewire\Plan\PlanEditComponent;
+use App\Http\Livewire\Plan\PlanListComponent;
 use App\Models\Expense;
 use Illuminate\Support\Facades\Route;
 use \Illuminate\Support\Facades\{File, Storage};
@@ -51,4 +54,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
         })->name('expenses-image');
     });
 
+    Route::prefix('plans')->name('plans.')->group(function(){
+        Route::get('/', PlanListComponent::class)->name('index');
+
+        Route::get('/create', PlanCreateComponent::class)
+             //->middleware('check.amountexpenses')
+            ->name('create');
+    });
 });
